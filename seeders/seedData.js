@@ -1695,14 +1695,8 @@ export const seedCompleteDatabase = async () => {
     );
     console.log(`✓ Seeded ${rosterEntries.length} November 2026 Monthly Roster Entries.`);
 
-    // 12. Ensure Demo Auth Accounts exist for all 4 roles + pod leads
-    const defaultPasswordHash = await bcrypt.hash('Admin@12345', 10);
     // 12. Ensure Demo Auth Accounts exist for all 4 roles + pod leads with their exact respective passwords
     const demoUsers = [
-      { name: 'System Administrator', email: 'admin@datastraw.io', role: 'admin', isActive: true },
-      { name: 'Central Operations Manager', email: 'ops.manager@datastraw.io', role: 'operations_manager', isActive: true },
-      { name: 'Aarav Sharma (Pod Lead)', email: 'pod.lead@datastraw.io', role: 'pod_lead', podId: 'Customer Support Pod', employeeId: 'EMP001', isActive: true },
-      { name: 'Rahul Sharma (Employee)', email: 'employee@datastraw.io', role: 'employee', employeeId: 'EMP002', podId: 'Customer Support Pod', isActive: true }
       { name: 'System Administrator', email: 'admin@datastraw.io', role: 'admin', rawPassword: 'Admin@12345', isActive: true },
       { name: 'Central Operations Manager', email: 'ops.manager@datastraw.io', role: 'operations_manager', rawPassword: 'Ops@12345', isActive: true },
       { name: 'Aarav Sharma (Pod Lead)', email: 'pod.lead@datastraw.io', role: 'pod_lead', rawPassword: 'Lead@12345', podId: 'Customer Support Pod', employeeId: 'EMP001', isActive: true },
@@ -1715,7 +1709,6 @@ export const seedCompleteDatabase = async () => {
       delete userDoc.rawPassword;
       await User.findOneAndUpdate(
         { email: u.email },
-        { ...u, passwordHash: defaultPasswordHash },
         userDoc,
         { upsert: true, new: true }
       );
